@@ -28,19 +28,24 @@ def local_update(m,n):  # get a position (m,n), and accept or reject a randomVec
         if random.random() < acceptProbability:
             state[m][n] = newVector    # else the state do not change
 
+def read_state_from_file(f):
+
+    return state
+
+
 
 state = [[0 for i in range(0,100)] for j in range(0,100)]
 h = [[0 for i in range(0,100)] for j in range(0,100)]
 paraG = 1               # parameters
 paraW = 1
-temperature = 0.10001
+temperature = 1
 step = 0
 for i in range(0,100):   # initialize initial state and random parameters
     for j in range(0,100):
         state[i][j] = random_vector()
         h[i][j] = (random.random() - 0.5) * 2 * paraW
 
-while temperature > 0.1:               # annealing
+while temperature > 0.00001:               # annealing
     for circulation in range(1,1000):  # internal circulation for 1000 times at same temperature
         for i in range(0, 100):
             for j in range(0, 100):
