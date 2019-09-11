@@ -26,7 +26,7 @@ def plot(state):
         y = [j for i in range(100)]
         plt.scatter(x, y, c=phase[j], marker="s", s=4)
     plt.colorbar()
-    plt.savefig(file.name + ".png")
+    plt.savefig(file.name[:-4] + ".png")
     plt.show()
 
 

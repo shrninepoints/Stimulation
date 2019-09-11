@@ -35,10 +35,7 @@ def random_vector_normal(previousVector):  # an improvise of random_vector(), ai
 
 def hamiltonian(m, n, vector):  # energy based on environment
     term1 = np.dot(vector, state[(m + 1) % 100][n][0]) + np.dot(vector, state[(m - 1) % 100][n][0]) + np.dot(vector,
-                                                                                                             state[m][(
-                                                                                                                              n + 1) % 100][
-                                                                                                                 0]) + np.dot(
-        vector, state[m][(n - 1) % 100][0])
+            state[m][(n + 1) % 100][0]) + np.dot(vector, state[m][(n - 1) % 100][0])
     term2 = paraG * vector[2] * vector[2]
     term3 = h[m][n] * vector[2]
     energy = term1 + term2 + term3
