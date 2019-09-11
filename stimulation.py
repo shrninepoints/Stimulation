@@ -99,8 +99,8 @@ if __name__ == "__main__":
     args = [0,0,0,0]
     args = cal_args(sys.argv[1:])
 
-    paraG = args[0]
-    paraW = args[1]
+    paraG = int(args[0])
+    paraW = int(args[1])
     init_temp = args[2]
     temp_min = args[3]
     h = [[0 for i in range(0, 100)] for j in range(0, 100)]
