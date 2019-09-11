@@ -29,10 +29,10 @@ def plot(state):
     plt.show()
 
 
-'''
-state = [[0 for i in range(0,100)] for j in range(0,100)]
-file = open("export.txt","r+")
-load_state_from_file(file,state)
+if __name__ == "__main__":
+    state = [[0 for i in range(0,100)] for j in range(0,100)]
+    file = open("export.txt","r+")
+    load_state_from_file(file,state)
 
-plot(state)
-'''
+    plot(state)
+

@@ -14,6 +14,7 @@ import random
 import math
 import numpy as np
 import plot
+import sys, getopt
 
 
 def random_vector():
@@ -76,11 +77,29 @@ def calculate(G, W, init_temp, temp_min):
             print(state[i][j], file=file)
     file.close()
 
+def cal_args(argv):
+    opts, args = getopt.getopt(argv, "hg:w:t:m:", ["ifile=", "ofile="])
+    for opt, arg in opts:
+        if opt == '-h':
+            print("stimulation.py -g <paraG> -w <paraW> -t <init_temp> -m <temp_min>")
+            sys.exit()
+        if opt == '-g':
+            paraG = arg
+        if opt == '-w':
+            paraW = arg
+        if opt == '-t':
+            init_temp = arg
+        if opt == '-m':
+            temp_min = arg
+    calculate(paraG, paraW, init_temp,temp_min)
 
-paraG = 0
-paraW = 0
-h = [[0 for i in range(0, 100)] for j in range(0, 100)]
-state = [[0 for i in range(0,100)] for j in range(0,100)]
 
-calculate(1,1,0.1,0.099)
-plot.plot(state)
+if __name__ == "__main__":
+    paraG = 0
+    paraW = 0
+    h = [[0 for i in range(0, 100)] for j in range(0, 100)]
+    state = [[0 for i in range(0,100)] for j in range(0,100)]
+
+    cal_args(sys.argv[1:])
+    # calculate()
+    plot.plot(state)
