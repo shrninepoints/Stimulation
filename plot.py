@@ -26,13 +26,13 @@ def plot(state):
         y = [j for i in range(100)]
         plt.scatter(x, y, c=phase[j], marker="s", s=4)
     plt.colorbar()
-    plt.savefig("examples.png")
+    plt.savefig(file.name + ".png")
     plt.show()
 
 
 if __name__ == "__main__":
     state = [[0 for i in range(0,100)] for j in range(0,100)]
-    file = open("export.txt","r+")
+    file = open("export 1.0 1.0 1.0 0.99.txt","r+")
     load_state_from_file(file,state)
 
     plot(state)

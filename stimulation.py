@@ -67,7 +67,7 @@ def calculate(G, W, init_temp, temp_min):
 
     try:  # if exist a previous exported file, then use the file data for state[][], else create the file
         file = open(
-            "export" + ' ' + str(paraG) + ' ' + str(paraW) + ' ' + str(init_temp) + ' ' + str(temp_min) + ".txt", "r+")
+            "export" + '_' + str(paraG) + '_' + str(paraW) + '_' + str(init_temp) + '_' + str(temp_min) + ".txt", "r+")
     except IOError:
         pass
     else:
@@ -80,7 +80,7 @@ def calculate(G, W, init_temp, temp_min):
                     local_update(i, j, temperature)
         temperature = 0.98 * temperature
 
-    file = open("export" + ' ' + str(paraG) + ' ' + str(paraW) + ' ' + str(init_temp) + ' ' + str(temp_min) + ".txt",
+    file = open("export" + '_' + str(paraG) + '_' + str(paraW) + '_' + str(init_temp) + '_' + str(temp_min) + ".txt",
                 "w+")
     for i in range(0, 100):  # put the current state into file
         for j in range(0, 100):
@@ -110,7 +110,7 @@ def plot(state):
         y = [j for i in range(100)]
         plt.scatter(x, y, c=phase[j], marker="s", s=4)
     plt.colorbar()
-    plt.savefig("export" + ' ' + str(paraG) + ' ' + str(paraW) + ' ' + str(init_temp) + ' ' + str(temp_min) + ".png")
+    plt.savefig("export" + '_' + str(paraG) + '_' + str(paraW) + '_' + str(init_temp) + '_' + str(temp_min) + ".png")
     plt.show()
 
 
