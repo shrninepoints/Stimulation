@@ -78,30 +78,33 @@ def calculate(G, W, init_temp, temp_min):
     file.close()
 
 def cal_args(argv):
+    arguments = [0,0,0,0]
     opts, args = getopt.getopt(argv, "hg:w:t:m:", ["ifile=", "ofile="])
     for opt, arg in opts:
         if opt == '-h':
             print("stimulation.py -g <paraG> -w <paraW> -t <init_temp> -m <temp_min>")
             sys.exit()
         if opt == '-g':
-            paraG = arg
+            arguments[0] = arg
         if opt == '-w':
-            paraW = arg
+            arguments[1] = arg
         if opt == '-t':
-            init_temp = arg
+            arguments[2] = arg
         if opt == '-m':
-            temp_min = arg
-
+            arguments[3] = arg
+    return arguments
 
 
 if __name__ == "__main__":
-    paraG = 0
-    paraW = 0
-    init_temp = 0
-    temp_min = 0
+    args = [0,0,0,0]
+    args = cal_args(sys.argv[1:])
+
+    paraG = args[0]
+    paraW = args[1]
+    init_temp = args[2]
+    temp_min = args[3]
     h = [[0 for i in range(0, 100)] for j in range(0, 100)]
     state = [[0 for i in range(0,100)] for j in range(0,100)]
 
-    cal_args(sys.argv[1:])
     calculate(paraG, paraW, init_temp, temp_min)
     plot.plot(state)
