@@ -91,15 +91,17 @@ def cal_args(argv):
             init_temp = arg
         if opt == '-m':
             temp_min = arg
-    calculate(paraG, paraW, init_temp,temp_min)
+
 
 
 if __name__ == "__main__":
     paraG = 0
     paraW = 0
+    init_temp = 0
+    temp_min = 0
     h = [[0 for i in range(0, 100)] for j in range(0, 100)]
     state = [[0 for i in range(0,100)] for j in range(0,100)]
 
     cal_args(sys.argv[1:])
-    # calculate()
+    calculate(paraG, paraW, init_temp, temp_min)
     plot.plot(state)
