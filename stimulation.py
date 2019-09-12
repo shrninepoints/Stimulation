@@ -15,6 +15,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sys, getopt
 from ast import literal_eval
+import time
 
 
 def random_vector():
@@ -33,18 +34,28 @@ def random_vector_normal(previousVector):  # an improvise of random_vector(), ai
     return (tupCartesian, tupSphere)
 
 
-def hamiltonian(m, n, vector):  # energy based on environment
-    term1 = np.dot(vector, state[(m + 1) % 100][n][0]) + np.dot(vector, state[(m - 1) % 100][n][0]) + np.dot(vector,
-            state[m][(n + 1) % 100][0]) + np.dot(vector, state[m][(n - 1) % 100][0])
-    term2 = paraG * vector[2] * vector[2]
-    term3 = h[m][n] * vector[2]
-    energy = term1 + term2 + term3
+def hamiltonian_local(m, n, vector):  # energy based on environment
+    term1: float = np.dot(vector, state[(m + 1) % 100][n][0]) + \
+                   np.dot(vector, state[(m - 1) % 100][n][0]) + \
+                   np.dot(vector, state[m][(n - 1) % 100][0]) + \
+                   np.dot(vector, state[m][(n + 1) % 100][0])
+    term2: float = paraG * vector[2] * vector[2]
+    term3: float = h[m][n] * vector[2]
+    energy: float = - term1 / 2 - term2 + term3
+    return energy
+
+
+def hamiltonian_global():
+    energy: float = 0
+    for i in range(0, 100):
+        for j in range(0, 100):
+            energy += hamiltonian_local(i,j, state[i][j][0])
     return energy
 
 
 def local_update(m, n, temperature):  # get a position (m,n), and accept or reject a randomVector result
     newVector = random_vector()
-    deltaE = hamiltonian(m, n, state[m][n][0]) - hamiltonian(m, n, newVector[0])
+    deltaE = hamiltonian_local(m, n, newVector[0]) - hamiltonian_local(m, n, state[m][n][0])
     if deltaE < 0:
         state[m][n] = newVector
     else:
@@ -71,11 +82,14 @@ def calculate(G, W, init_temp, temp_min):
         load_state_from_file(file, state)
 
     while temperature > temp_min:  # annealing
-        for circulation in range(0, 1000):  # internal circulation for 100 times at same temperature
+        for circulation in range(0, 100):  # internal circulation for 100 times at same temperature
             for i in range(0, 100):
                 for j in range(0, 100):
                     local_update(i, j, temperature)
-        temperature = 0.98 * temperature
+        print(str(temperature) + " " +
+              str(hamiltonian_global()) + " " +
+              time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+        temperature = 0.95 * temperature
 
     file = open("export" + '_' + str(paraG) + '_' + str(paraW) + '_' + str(init_temp) + '_' + str(temp_min) + ".txt",
                 "w+")
@@ -111,12 +125,12 @@ def plot(state):
     plt.show()
 
 
-def cal_args(argv):
-    arguments = [0, 0, 0, 0]
-    opts, args = getopt.getopt(argv, "hg:w:t:m:", ["ifile=", "ofile="])
+def get_args(argv):
+    arguments = [0, 0, 0, 0, 0]
+    opts, args = getopt.getopt(argv, "hg:w:t:m:f:")
     for opt, arg in opts:
         if opt == '-h':
-            print("stimulation.py -g <paraG> -w <paraW> -t <init_temp> -m <temp_min>")
+            print("stimulation.py -g <paraG> -w <paraW> -t <init_temp> -m <temp_min> -f <file>")
             sys.exit()
         if opt == '-g':
             arguments[0] = arg
@@ -126,21 +140,29 @@ def cal_args(argv):
             arguments[2] = arg
         if opt == '-m':
             arguments[3] = arg
+        if opt == '-f':
+            arguments[4] = arg
     return arguments
 
 
 if __name__ == "__main__":
-    args = [0, 0, 0, 0]
-    args = cal_args(sys.argv[1:])
+    h = [[0 for i in range(0, 100)] for j in range(0, 100)]
+    state = [[0 for i in range(0, 100)] for j in range(0, 100)]
+    args = [0, 0, 0, 0, 0]
+    args = get_args(sys.argv[1:])
 
     paraG = float(args[0])
     paraW = float(args[1])
     init_temp = float(args[2])
     temp_min = float(args[3])
-    h = [[0 for i in range(0, 100)] for j in range(0, 100)]
-    state = [[0 for i in range(0, 100)] for j in range(0, 100)]
+    file_name = args[4]
+    if file_name != 0:
+        try:
+            f = open(file_name,"r")
+            load_state_from_file(f,state)
+        except IOError:
+            print("No such file, or incorrect format")
 
     calculate(paraG, paraW, init_temp, temp_min)
     plot(state)
-
     print('\a' * 5)

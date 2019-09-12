@@ -32,7 +32,7 @@ def plot(state):
 
 if __name__ == "__main__":
     state = [[0 for i in range(0,100)] for j in range(0,100)]
-    file = open("export 1.0 1.0 1.0 0.99.txt","r+")
+    file = open("export 1.0 1.0 1.0 0.1.txt","r+")
     load_state_from_file(file,state)
 
     plot(state)
