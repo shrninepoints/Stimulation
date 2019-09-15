@@ -26,9 +26,6 @@ def random_vector():
     return (tupCartesian, tupSphere)
 
 
-
-
-
 def hamiltonian_local(m, n, vector):  # energy based on environment
     term1: float = np.dot(vector, state[(m + 1) % 100][n][0]) + \
                    np.dot(vector, state[(m - 1) % 100][n][0]) + \
